@@ -9,36 +9,70 @@
 // 4. obtener el número que más se repite y mostrarlo en un <em> pre-creado con el texto 
 //"El número más frecuente es..."
 
-const nodeListStringNumerico = document.querySelectorAll('.numero');
-const numerosArray = [];
+document.querySelector("#boton").onclick = function (){
+    
+    document.querySelector("#promedio").textContent += (promedioNumeros())
+    document.querySelector("#grande").textContent += (numeroMayor())
+    document.querySelector("#pequeno").textContent += (numeroMenor())
+    document.querySelector("#frecuente").textContent += (numeroFrecuente())
+    
+    return false}
 
-function obtenerArray(nodeList){
-  for(let i = 0; i < nodeList.length; i++){
-    numerosArray.push(Number(nodeList[i].textContent));
-  }
+let liElements = document.getElementsByTagName('li')
+let liNumbers = []
+
+for (let i = 0; i < liElements.length; i++) {
+    let liValue = Number(liElements[i].innerText)
+    if (!isNaN(liValue)) {
+        liNumbers.push(liValue)
+    }
 }
 
-console.log (numerosArray)
 
-
-function $promedio (){
+function promedioNumeros (){
 
 let resultadoTodos = 0
 let promedio = 0
-for(let i = 0; i<numerosArr.length; i++){
-    resultadoTodos = resultadoTodos + Number(numerosArr[i].innerText) 
-
-    promedio = resultadoTodos / numeros.length
+for(let i = 0; i<liNumbers.length; i++){
+    resultadoTodos = resultadoTodos + liNumbers[i]
+    promedio = resultadoTodos / liNumbers.length
 }
+return promedio
 }
 
 function numeroMayor() {
-    let maximoNumero = numerosArr[0]
-    for(i = 0; i < numerosArr.length; i++){
-        let contador = numerosArr[i]
-        if(contador > maximoNumero){
+    let maximoNumero = liNumbers[0]
+    for(i = 0; i < liNumbers.length; i++){
+        let contador = liNumbers[i]
+        while(contador > maximoNumero){
             maximoNumero = contador
         }
+    } 
+return maximoNumero
+}
+
+function numeroMenor() {
+    let minimoNumero = liNumbers[0]
+    for(i = 0; i < liNumbers.length; i++){
+        let contador = liNumbers[i]
+        while(contador < minimoNumero){
+            minimoNumero = contador
+        }
     }
-    console.log (maximoNumero)
+return minimoNumero
+}
+
+function numeroFrecuente() {
+   let nroFrecuente = 0
+    for (i = 0; i < liNumbers.length; i++){
+        let contador = liNumbers[i]
+        for (j = 1; j < liNumbers.length; j++){
+           let contadorJ = liNumbers[j] 
+           if (contador = contadorJ){
+                    nroFrecuente = contador
+                
+            }
+        }
+    }
+return nroFrecuente
 }
