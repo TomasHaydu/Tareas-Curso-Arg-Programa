@@ -1,10 +1,5 @@
 const $form = document.querySelector('#carta-a-santa');
 
-const nombre = $form.nombre.value;
-const ciudad = $form.ciudad.value;
-const comportamiento = $form.comportamiento.value;
-const descripcionRegalo = $form['descripcion-regalo'].value;
-
 function validarNombre(nombre) {
     if (nombre.length === 0) {
         return 'Este campo debe tener al menos 1 caracter'
@@ -18,30 +13,26 @@ function validarNombre(nombre) {
         return 'Este campo debe tener al menos 2 caracteres'
     }
 
-    if (!/[A-z]+/.test(nombre)) {
+    if (!/^[A-z]+$/.test(nombre)) {
         return 'Este campo debe contener solo letras'
     }
     return ''
 }
 
-
-validarNombre(nombre)
-
 function validarCiudad(ciudad) {
-    if (ciudad = "") {
+    if (ciudad === '') {
         return 'Este campo esta incompleto'
     }
     return ''
 }
 
-validarCiudad(ciudad)
 
 function validarDescripcionRegalo(descripcionRegalo) {
     if (descripcionRegalo.length === 0) {
         return 'Este campo debe tener al menos 1 caracter'
     }
 
-    if (descripcionRegalo.length >= 0) {
+    if (descripcionRegalo.length >= 50) {
         return 'Este campo debe tener menos de 50 caracteres'
     }
 
@@ -51,53 +42,60 @@ function validarDescripcionRegalo(descripcionRegalo) {
     return ''
 }
 
-validarDescripcionRegalo(descripcionRegalo)
+function validarFormulario(event) {
+    const nombre = $form.nombre.value;
+    const ciudad = $form.ciudad.value;
+    const descripcionRegalo = $form["descripcion-regalo"].value;
 
-function validarFormulario(event){
-    const $form = document.querySelector('#carta-a-santa');
+    const errorNombre = validarNombre(nombre);
+    const errorCiudad = validarCiudad(ciudad);
+    const errorDescripcionRegalo = validarDescripcionRegalo(descripcionRegalo);
 
-const nombre = $form.nombre.value;
-const ciudad = $form.ciudad.value;
-const comportamiento = $form.comportamiento.value;
-const descripcionRegalo = $form['descripcion-regalo'].value;
+    const errores = {
+        nombre: errorNombre,
+        ciudad: errorCiudad,
+        'descripcion-regalo': errorDescripcionRegalo
+    };
 
-const errorNombre = validarNombre(nombre);
-const errorCiudad = validarCiudad(ciudad);
-const errorDescripcionRegalo = validarDescripcionRegalo(descripcionRegalo);
+    const esExito = manejarErrores(errores) === 0;
 
-const errores = {
-    nombre: errorNombre,
-    ciudad: errorCiudad,
-    descripcionRegalo: errorDescripcionRegalo
-};
+    if(esExito){
+        $form.className = "oculto"
+        document.querySelector("#exito").className = "";
+    }
 
-manejarErrores(errores);
-
-event.preventDefault();
+    event.preventDefault();
 }
 
-function manejarErrores (errores){
-    errorNombre = errores.nombre;
-    errorCiudad = errores.ciudad;
-    errorDescripcionRegalo = errores.descripcionRegalo;
- 
-    if(errorNombre){
-        $from.nombre.className = "error";
-    } else {
-        $from.nombre.className = "";
-    }
+function manejarErrores(errores) {
+    const keys = Object.keys(errores);   
+    const $errores = document.querySelector('#errores');
+    let cantidadErrores = 0 ;
     
-    if(errorCiudad){
-        $from.ciudad.className = "error";
-    } else {
-        $from.ciudad.className = "";
-    }
 
-    if(errorDescripcionRegalo){
-        $from.descripcionRegalo.className = "error";
-    } else {
-        $from.descripcionRegalo.className = "";
-    }
+    keys.forEach(function(key){
+        const error = errores[key];
+        
+
+        if (error){
+            $errores.remove()
+            
+            cantidadErrores++
+            
+            $form[key].className = "error";
+
+            const $error = document.createElement("li")
+            $error.innerText = error;
+            $errores.appendChild($error)
+            
+        
+        } else {
+
+            $form[key].className = "";
+        }
+    })
+
+    return cantidadErrores
 }
 
 $form.onsubmit = validarFormulario;

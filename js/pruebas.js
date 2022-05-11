@@ -1,9 +1,5 @@
 function probarValidarNombre() {
   console.assert(
-      validarNombre(0) === 'Este campo debe tener al menos 1 caracter',
-      'Validar nombre no validó que el nombre no sea vacío',
-  );
-  console.assert(
     validarNombre("") === 'Este campo debe tener al menos 1 caracter',
     'Validar nombre no validó que el nombre no sea vacío',
 );
@@ -42,7 +38,7 @@ probarValidarCiudad()
 
 function probarValidarDescripcionRegalo(){
     console.assert(
-        validarDescripcionRegalo('') === 'Este campo debe tener al menos 1 caracter',
+        validarDescripcionRegalo("") === 'Este campo debe tener al menos 1 caracter',
         'Validar descripcion regalo no validó que la descripcion no sea vacío',
     );
   
